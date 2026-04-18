@@ -6,11 +6,10 @@ dotenv.config();
 /* ================= DATABASE CONNECTION ================= */
 
 const pool = new Pool({
-  host: process.env.DB_HOST || "localhost",
-  port: Number(process.env.DB_PORT) || 5432,
-  user: process.env.DB_USER || "postgres",
-  password: process.env.DB_PASSWORD || "jntuk",
-  database: process.env.DB_NAME || "admin_db",
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // 🔥 required for Neon
+  },
 });
 
 /* ================= TEST CONNECTION ================= */
@@ -18,14 +17,10 @@ const pool = new Pool({
 pool.connect()
   .then(async (client) => {
     console.log("\n===================================");
-    console.log("✅ PostgreSQL Database Connected");
-    console.log("===================================");
-    console.log(`Host      : ${process.env.DB_HOST}`);
-    console.log(`Database  : ${process.env.DB_NAME}`);
-    console.log(`User      : ${process.env.DB_USER}`);
+    console.log("✅ Neon PostgreSQL Connected");
     console.log("===================================\n");
 
-    // 🔥 DEBUG: CHECK DATA (VERY IMPORTANT)
+    // 🔥 DEBUG: CHECK DATA
     const result = await client.query("SELECT * FROM admins");
     console.log("👉 ADMINS IN DB:", result.rows.length);
 
