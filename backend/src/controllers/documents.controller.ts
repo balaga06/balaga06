@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { pool } from "../config/db";
+import  pool  from "../config/db";
 
 /* ================= GET ALL DOCUMENTS (ADMIN) ================= */
 export const getAllDocuments = async (req: Request, res: Response) => {
