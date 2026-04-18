@@ -2,8 +2,14 @@
   "name": "iqac-admin-backend",
   "version": "1.0.0",
   "description": "IQAC Admin Panel Backend (Node.js, Express, PostgreSQL)",
+  "main": "dist/utils/server.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/utils/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/utils/server.ts",
+    "build": "tsc",
+    "start": "node dist/utils/server.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
