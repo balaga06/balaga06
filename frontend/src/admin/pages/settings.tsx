@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Save,
   Lock,
@@ -9,9 +9,30 @@ import {
   CheckCircle,
 } from "lucide-react";
 
+/* ================= TYPES ================= */
+
+interface SettingsState {
+  universityName: string;
+  shortName: string;
+  adminEmail: string;
+  contactNumber: string;
+  twoFactorAuth: boolean;
+  emailNotifications: boolean;
+  systemMaintenance: boolean;
+}
+
+interface PasswordState {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+/* ================= MAIN COMPONENT ================= */
+
 export default function Settings() {
-  const [settings, setSettings] = useState({
-    universityName: "Jawaharlal Nehru Technological University Kakinada",
+  const [settings, setSettings] = useState<SettingsState>({
+    universityName:
+      "Jawaharlal Nehru Technological University Kakinada",
     shortName: "JNTUK",
     adminEmail: "admin@jntuk.edu.in",
     contactNumber: "+91 98765 43210",
@@ -23,18 +44,21 @@ export default function Settings() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordSaved, setPasswordSaved] = useState(false);
 
-  const [passwords, setPasswords] = useState({
+  const [passwords, setPasswords] = useState<PasswordState>({
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = (
+    key: keyof SettingsState,
+    value: string | boolean
+  ) => {
     setSettings({ ...settings, [key]: value });
   };
 
   const handlePasswordChange = (
-    key: string,
+    key: keyof PasswordState,
     value: string
   ) => {
     setPasswords({ ...passwords, [key]: value });
@@ -55,18 +79,14 @@ export default function Settings() {
       return;
     }
 
-    // ✅ Backend API call later
-
     setPasswordSaved(true);
 
-    // Reset fields
     setPasswords({
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     });
 
-    // Auto close after success
     setTimeout(() => {
       setPasswordSaved(false);
       setShowPassword(false);
@@ -133,7 +153,6 @@ export default function Settings() {
         title="Security"
         icon={<Lock className="w-5 h-5 text-indigo-600" />}
       >
-        {/* Change Password Toggle */}
         <button
           onClick={() => setShowPassword(!showPassword)}
           className="flex items-center gap-2 text-indigo-600 text-sm font-medium hover:underline col-span-full"
@@ -142,7 +161,6 @@ export default function Settings() {
           Change Password
         </button>
 
-        {/* Password Fields */}
         {showPassword && (
           <div className="col-span-full space-y-4 mt-2">
             <div className="grid md:grid-cols-2 gap-4">
@@ -181,7 +199,6 @@ export default function Settings() {
               />
             </div>
 
-            {/* Save Password Button */}
             <div className="flex items-center gap-4">
               <button
                 onClick={handlePasswordSave}
@@ -210,7 +227,7 @@ export default function Settings() {
         <Toggle
           label="Email Notifications"
           checked={settings.emailNotifications}
-          onChange={(v) =>
+          onChange={(v: boolean) =>
             handleChange("emailNotifications", v)
           }
         />
@@ -227,13 +244,15 @@ export default function Settings() {
   );
 }
 
-/* ================= REUSABLE ================= */
+/* ================= REUSABLE COMPONENTS ================= */
 
-function Section({
-  title,
-  icon,
-  children,
-}: any) {
+interface SectionProps {
+  title: string;
+  icon: ReactNode;
+  children: ReactNode;
+}
+
+function Section({ title, icon, children }: SectionProps) {
   return (
     <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
       <div className="flex items-center gap-3 border-b pb-3">
@@ -249,12 +268,19 @@ function Section({
   );
 }
 
+interface FieldProps {
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+}
+
 function Field({
   label,
   value,
   onChange,
   type = "text",
-}: any) {
+}: FieldProps) {
   return (
     <div className="space-y-1">
       <label className="text-sm font-medium text-slate-600">
@@ -270,7 +296,13 @@ function Field({
   );
 }
 
-function Toggle({ label, checked, onChange }: any) {
+interface ToggleProps {
+  label: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+}
+
+function Toggle({ label, checked, onChange }: ToggleProps) {
   return (
     <div className="flex items-center justify-between col-span-full">
       <span className="text-sm font-medium text-slate-700">
