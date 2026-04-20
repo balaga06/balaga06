@@ -6,7 +6,7 @@ import axios, {
 /* ================= BASE INSTANCE ================= */
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: false,
 });
 
@@ -16,7 +16,6 @@ api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("token");
 
-    // ✅ DO NOT overwrite headers
     if (token) {
       config.headers.set("Authorization", `Bearer ${token}`);
     }
@@ -34,7 +33,6 @@ api.interceptors.response.use(
   (error: AxiosError<any>) => {
     const status = error.response?.status;
 
-    /* ================= 401 ================= */
     if (status === 401) {
       console.warn("🔒 Unauthorized - redirecting to login");
 
@@ -45,12 +43,10 @@ api.interceptors.response.use(
       }
     }
 
-    /* ================= 500 ================= */
     if (status === 500) {
       console.error("🔥 Server error:", error.response?.data);
     }
 
-    /* ================= NETWORK ================= */
     if (!error.response) {
       console.error("🌐 Network error / backend down");
     }
