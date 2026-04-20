@@ -9,22 +9,15 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
 
-    /* ✅ React FIX */
     "jsx": "react-jsx",
-    "types": ["react", "react-dom"],
 
-    /* ✅ Path Alias FIX */
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
 
-    /* ✅ Strict + Stability */
     "strict": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-
-    /* ✅ Your existing */
-    "ignoreDeprecations": "6.0"
+    "resolveJsonModule": true
   }
 }

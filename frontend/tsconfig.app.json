@@ -4,6 +4,7 @@
     "module": "ESNext",
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
+
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -11,8 +12,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    },
-
-    "ignoreDeprecations": "6.0"
+    }
   }
 }
