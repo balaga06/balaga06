@@ -57,7 +57,9 @@ export default function Intro() {
         loadImage();
     }, []);
     const pillars = data?.pillars || fallback.pillars;
-    return (_jsxs("section", { className: "relative min-h-[70vh] overflow-hidden", children: [_jsxs("div", { className: "absolute inset-0", children: [_jsx("img", { src: image && image.startsWith("http")
+    return (
+    /* ✅ FIXED HEIGHT HERE */
+    _jsxs("section", { className: "relative min-h-[70vh] overflow-hidden", children: [_jsxs("div", { className: "absolute inset-0", children: [_jsx("img", { src: image && image.startsWith("http")
                             ? image
                             : "/images/jntuk-gate.jpg", onError: (e) => {
                             e.currentTarget.src = "/images/jntuk-gate.jpg";
